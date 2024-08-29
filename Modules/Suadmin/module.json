@@ -1,0 +1,11 @@
+{
+    "name": "Suadmin",
+    "alias": "suadmin",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Suadmin\\Providers\\SuadminServiceProvider"
+    ],
+    "files": []
+}
