@@ -46,6 +46,8 @@
                     currentRow.find('.item_sale').val(response.item.item_sale_price);
                     currentRow.find('.item_total_amount').val(response.item.item_purchase_price);
                     currentRow.find('.item_name').val(response.item.item_name);
+                    currentRow.find('.item_name').val(response.item.item_name);
+                    currentRow.find('.item_stock').val(response.item.item_stock);
                     currentRow.find('.item_tax_percentage').val(response.item.item_tax);
                 }
             });

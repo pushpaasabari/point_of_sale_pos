@@ -133,6 +133,9 @@
                                                             class="form-control form-control-sm item_qty" id="item_qty"
                                                             data-min="1" data-max="99999999"
                                                             oninput="validateNumber(this)" placeholder="Qty" required>
+                                                        <input type="hidden" name="item_stock[]" id="item_stock"
+                                                            class="form-control form-control-sm item_stock" min="0"
+                                                            placeholder="Qty">
                                                     </td>
                                                     <td class="col-sm-1 pb-2">
                                                         <input type="text"
