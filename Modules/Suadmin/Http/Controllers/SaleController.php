@@ -12,7 +12,9 @@ class SaleController extends Controller
     public function sale_add()
     {
         $customer = DB::table('customer')->get();
-        $item = DB::table('item')->get();
+        $item = DB::table('item')
+            ->where("item_status", 1)
+            ->get();
         $lastSale = DB::table('sale')->orderBy('sale_bill', 'desc')->first();
         $nextBillNumber = $this->generateNextBillNumber($lastSale ? $lastSale->sale_bill : null);
         return view('suadmin::sale.add', compact('customer', 'nextBillNumber', 'item'));
@@ -57,6 +59,7 @@ class SaleController extends Controller
     {
         $get_item_ajax['item'] = DB::table('item')
             ->where("item_sno", $request->item_sno)
+            ->where("item_status", 1)
             ->get()
             ->first();
         return response()->json($get_item_ajax);

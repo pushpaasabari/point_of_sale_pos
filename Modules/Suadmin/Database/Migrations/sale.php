@@ -19,10 +19,14 @@ return new class extends Migration {
             $table->string('customer_mobile', 15);
             $table->string('sale_bill', 50);
             $table->string('sale_date', 50);
+            $table->string('totalQty', 50);
             $table->decimal('total_amount', total: 10, places: 2);
+            $table->decimal('item_totalDiscountAmount', total: 10, places: 2);
+            $table->decimal('item_totalTaxAmount', total: 10, places: 2);
+            $table->decimal('item_totalReceived', total: 10, places: 2);
+            $table->decimal('item_totalBalance', total: 10, places: 2);
             $table->string('sale_created_at', 120);
             $table->string('sale_updated_at', 120);
-
         });
     }
 

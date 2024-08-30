@@ -15,7 +15,10 @@ class PurchaseController extends Controller
     public function purchase_add()
     {
         $vendor = DB::table('vendor')->get();
-        $item = DB::table('item')->get();
+        $item = DB::table('item')
+            ->where("item_status", 1)
+            ->get();
+
         return view('suadmin::purchase.add', compact('vendor', 'item'));
     }
     public function purchase_add_post(Request $request)

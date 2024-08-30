@@ -28,6 +28,7 @@
                                             <th>Sale Price</th>
                                             <th>Tax</th>
                                             <th>Unit</th>
+                                            <th>Stock</th>
                                             <th>Status</th>
                                             <th>Action</th>
                                         </tr>
@@ -45,6 +46,7 @@
                                             <td>{{$value->item_sale_price}}</td>
                                             <td>{{$value->item_tax}}</td>
                                             <td>{{$value->item_base_unit}}</td>
+                                            <td>{{$value->item_stock}}</td>
                                             @if($value->item_status == 1)
 
                                             <td>
