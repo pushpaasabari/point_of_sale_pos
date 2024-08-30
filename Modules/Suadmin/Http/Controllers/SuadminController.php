@@ -23,7 +23,10 @@ class SuadminController extends Controller
             $user = DB::table('su_user')->count();
             $customer = DB::table('customer')->count();
             $item = DB::table('item')->count();
-            return view('suadmin::index', compact('user', 'customer', 'item'));
+            $total_amount = DB::table('sale')
+                ->selectRaw('SUM(total_amount) as total_amount')
+                ->value('total_amount');
+            return view('suadmin::index', compact('user', 'total_amount', 'customer', 'item'));
         } else {
             return view('suadmin::login');
         }

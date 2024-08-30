@@ -60,8 +60,8 @@
                                         <span class="info-box-icon bg-danger"><i class="fas fa-rupee-sign"></i></span>
 
                                         <div class="info-box-content">
-                                            <span class="info-box-text">Likes</span>
-                                            <span class="info-box-number">93,139</span>
+                                            <span class="info-box-text">Sales</span>
+                                            <span class="info-box-number">{{$total_amount}}</span>
                                         </div>
                                         <!-- /.info-box-content -->
                                     </div>
