@@ -74,6 +74,8 @@ Route::prefix('suadmin')->group(function () {
     #Sale route 
     Route::get('/sale.add', [SaleController::class, 'sale_add']);
     Route::post('/sale.add', [SaleController::class, 'sale_add_post']);
+    Route::post('/sale.fetch_customer_details', [SaleController::class, 'fetch_customer_details']);
+    Route::post('/sale.fetch_item_details', [SaleController::class, 'fetch_item_details']);
 
 
 

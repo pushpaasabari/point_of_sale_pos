@@ -272,6 +272,6 @@
         </div>
     </div>
     @include('suadmin::layouts.jslinks')
-    @include('suadmin::layouts.ajax')
+    @include('suadmin::layouts.ajax_purchase')
     @include('suadmin::layouts.script_purchase')
     @include('suadmin::layouts.footer')

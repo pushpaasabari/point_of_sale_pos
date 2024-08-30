@@ -2,7 +2,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
     var today = new Date().toISOString().split('T')[0];
-    document.getElementById('purchase_date').setAttribute('value', today);
+    document.getElementById('sale_date').setAttribute('value', today);
   });
 </script>
 {{-- Remove any non-numeric characters --}}
@@ -33,11 +33,11 @@
     }
 </script>
 {{-- Input Uppercase --}}
-<script>
-    document.getElementById('purchase_bill').addEventListener('input', function() {
+{{-- <script>
+    document.getElementById('sale_bill').addEventListener('input', function() {
     this.value = this.value.toUpperCase().replace(/[^A-Z0-9\/\-_]/g, '');
     });
-</script>
+</script> --}}
 {{-- Add/Delete Row --}}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -122,7 +122,7 @@
         // Function to calculate row total, discount, and tax
         function calculateRow(row) {
             let qty = parseFloat($(row).find('.item_qty').val()) || 0;
-            let price = parseFloat($(row).find('.item_purchase').val()) || 0;
+            let price = parseFloat($(row).find('.item_sale').val()) || 0;
             let discountPercentage = parseFloat($(row).find('.item_discount_percentage').val()) || 0;
             let discountAmount = parseFloat($(row).find('.item_discount').val()) || 0;
 
@@ -240,7 +240,7 @@
         }
 
         // Event listeners for input changes
-        $('#itemTableBody').on('input', '.item_qty, .item_purchase, .item_discount, .item_discount_percentage', function () {
+        $('#itemTableBody').on('input', '.item_qty, .item_sale, .item_discount, .item_discount_percentage', function () {
             let row = $(this).closest('tr');
             calculateRow(row);
         });
@@ -262,7 +262,7 @@
         // Function to calculate row total, discount, and tax
         function calculateRow(row) {
             let qty = parseFloat($(row).find('.item_qty').val()) || 0;
-            let price = parseFloat($(row).find('.item_purchase').val()) || 0;
+            let price = parseFloat($(row).find('.item_sale').val()) || 0;
             let discountPercentage = parseFloat($(row).find('.item_discount_percentage').val()) || 0;
             let discountAmount = parseFloat($(row).find('.item_discount').val()) || 0;
 
@@ -382,7 +382,7 @@
         }
 
         // Event listeners for input changes
-        $('#itemTableBody').on('input', '.item_qty, .item_purchase, .item_discount, .item_discount_percentage', function () {
+        $('#itemTableBody').on('input', '.item_qty, .item_sale, .item_discount, .item_discount_percentage', function () {
             let row = $(this).closest('tr');
             calculateRow(row);
         });
@@ -403,7 +403,7 @@
     // Function to calculate row total, discount, and tax
     function calculateRow(row) {
         let qty = parseFloat($(row).find('.item_qty').val()) || 0;
-        let price = parseFloat($(row).find('.item_purchase').val()) || 0;
+        let price = parseFloat($(row).find('.item_sale').val()) || 0;
         let discountPercentage = parseFloat($(row).find('.item_discount_percentage').val()) || 0;
         let discountAmount = parseFloat($(row).find('.item_discount').val()) || 0;
 
@@ -524,7 +524,7 @@
     }
 
     // Event listeners for input changes
-    $('#itemTableBody').on('input', '.item_qty, .item_purchase, .item_discount, .item_discount_percentage', function () {
+    $('#itemTableBody').on('input', '.item_qty, .item_sale, .item_discount, .item_discount_percentage', function () {
         let row = $(this).closest('tr');
         calculateRow(row);
     });
@@ -546,7 +546,7 @@
     // Function to calculate row total, discount, and tax
     function calculateRow(row) {
         let qty = parseFloat($(row).find('.item_qty').val()) || 0;
-        let price = parseFloat($(row).find('.item_purchase').val()) || 0;
+        let price = parseFloat($(row).find('.item_sale').val()) || 0;
         let discountPercentage = parseFloat($(row).find('.item_discount_percentage').val()) || 0;
         let discountAmount = parseFloat($(row).find('.item_discount').val()) || 0;
 
@@ -660,7 +660,7 @@
     }
 
     // Event listeners for input changes
-    $('#itemTableBody').on('input', '.item_qty, .item_purchase, .item_discount, .item_discount_percentage', function () {
+    $('#itemTableBody').on('input', '.item_qty, .item_sale, .item_discount, .item_discount_percentage', function () {
         let row = $(this).closest('tr');
         calculateRow(row);
     });
@@ -682,7 +682,7 @@
         // Function to calculate row total, discount, and tax
         function calculateRow(row) {
             let qty = parseFloat($(row).find('.item_qty').val()) || 0;
-            let price = parseFloat($(row).find('.item_purchase').val()) || 0;
+            let price = parseFloat($(row).find('.item_sale').val()) || 0;
             let discountPercentage = parseFloat($(row).find('.item_discount_percentage').val()) || 0;
             let discountAmount = parseFloat($(row).find('.item_discount').val()) || 0;
 
@@ -787,7 +787,7 @@
         }
 
         // Event listeners for input changes
-        $('#itemTableBody').on('input', '.item_qty, .item_purchase, .item_discount, .item_discount_percentage', function () {
+        $('#itemTableBody').on('input', '.item_qty, .item_sale, .item_discount, .item_discount_percentage', function () {
             let row = $(this).closest('tr');
             calculateRow(row);
         });
@@ -808,7 +808,7 @@
         // Function to calculate row total, discount, and tax
         function calculateRow(row) {
             let qty = parseFloat($(row).find('.item_qty').val()) || 0;
-            let price = parseFloat($(row).find('.item_purchase').val()) || 0;
+            let price = parseFloat($(row).find('.item_sale').val()) || 0;
             let discountPercentage = parseFloat($(row).find('.item_discount_percentage').val()) || 0;
             let discountAmount = parseFloat($(row).find('.item_discount').val()) || 0;
 
@@ -907,7 +907,7 @@
         }
 
         // Event listeners for input changes
-        $('#itemTableBody').on('input', '.item_qty, .item_purchase, .item_discount, .item_discount_percentage', function () {
+        $('#itemTableBody').on('input', '.item_qty, .item_sale, .item_discount, .item_discount_percentage', function () {
             let row = $(this).closest('tr');
             calculateRow(row);
         });
@@ -930,7 +930,7 @@
 <script>
     $(document).ready(function () {
     // Prevent Enter key from adding a new row
-    $('#add_purchase').on('keydown', function (event) {
+    $('#add_sale').on('keydown', function (event) {
         if (event.key === 'Enter') {
             event.preventDefault(); // Prevent the default action
             return false; // Return false to stop further propagation

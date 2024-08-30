@@ -11,275 +11,258 @@
         <div class="content-wrapper">
             @include('suadmin::layouts.breadcrumb')
             <section class="content">
-
-                <!-- Default box -->
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Sale</h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            {{-- <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                                <i class="fas fa-times"></i>
-                            </button> --}}
-                        </div>
-                    </div>
-                    <form name="add_purchase" id="add_purchase" class="form-horizontal" method="Post"
-                        action="{{ url('suadmin/purchase.add') }}" enctype="multipart/form-data" autocomplete="on">
-                        {{ csrf_field() }}
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <div class="col-sm-2 pb-2">
-                                    <label for="vendor_name">Customer :</label>
-                                    <select class=" select2" name="vendor_name" id="vendor_name"
-                                        data-placeholder="Select Customer" style="width: 100%;">
-                                        {{-- <option></option> --}}
-                                        @if($customer->count() > 0)
-                                        @foreach($customer as $value)
-                                        <option value="{{$value->customer_sno}}">{{$value->customer_name}}</option>
-                                        @endforeach
-                                        @endif
-                                    </select>
-                                </div>
-                                <div class="col-sm-2 pb-2">
-                                    <label for="vendor_list">Mobile :</label>
-                                    <input type="text" class="form-control" name="vendor_mobile" id="vendor_mobile"
-                                        placeholder="Mobile">
-                                </div>
+                <div class="col-lg-12">
+                    <div class="card">
+                        <form name="add_sale" id="add_sale" class="form-horizontal" method="Post"
+                            action="{{ url('suadmin/sale.add') }}" enctype="multipart/form-data" autocomplete="on">
+                            {{ csrf_field() }}
+                            <div class="card-header">
+                                <h4 class="card-title bold">Sale</h4>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-sm-2 pb-2">
-                                    <input type="text" class="form-control" name="purchase_bill_num"
-                                        id="purchase_bill_num" placeholder="Bill No" value="{{$nextBillNumber}}"
-                                        readonly>
-                                </div>
-                                <div class="col-sm-2 pb-2">
-                                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                                        <input type="text" class="form-control datetimepicker-input" id="sale_date"
-                                            data-target="#reservationdate" placeholder="Date">
-                                        <div class="input-group-append" data-target="#reservationdate"
-                                            data-toggle="datetimepicker">
-                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            <div class="card-body">
+                                <div class="basic-form form-group row">
+                                    <div class="col-sm-4 pb-2">
+                                        <div class="row">
+                                            <div class="col-sm-6 pb-2">
+                                                <label for="customer_name">Customer :</label>
+                                                <select class="form-control form-control-sm" id="customer_id"
+                                                    name="customer_id" required autofocus>
+                                                    <option value="">Select Customer</option>
+                                                    @if($customer->count() > 0)
+                                                    @foreach($customer as $value)
+                                                    <option value="{{$value->customer_sno}}">{{$value->customer_name}}
+                                                    </option>
+                                                    @endforeach
+                                                    @endif
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-6 pb-2">
+                                                <label for="customer_mobile">Mobile :</label>
+                                                <input type="text" class="form-control form-control-sm"
+                                                    name="customer_mobile" id="customer_mobile" placeholder="Mobile"
+                                                    required readonly>
+                                                <input type="hidden" class="form-control " name="customer_name"
+                                                    id="customer_name" required>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6 pb-2">
+                                                <label for="customer_gstin">GSTIN :</label>
+                                                <input type="text" class="form-control form-control-sm"
+                                                    name="customer_gstin" id="customer_gstin" placeholder="GSTIN"
+                                                    readonly>
+                                            </div>
+                                            <div class="col-sm-6 pb-2">
+                                                <label for="customer_address">Address :</label>
+                                                <input type="text" class="form-control form-control-sm"
+                                                    name="customer_address" id="customer_address" placeholder="Address">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 pb-2">
+                                    </div>
+                                    <div class="col-sm-4 pb-2 float-right">
+                                        <div class="row">
+                                            <div class="col-sm-6 pb-2">
+                                            </div>
+                                            <div class="col-sm-6 pb-2">
+                                                <label for="sale_bill" class="form-label">Sale Bill No
+                                                    :</label>
+                                                <input type="text" class="form-control form-control-sm" id="sale_bill"
+                                                    name="sale_bill" placeholder="Bill Number *" maxlength="25"
+                                                    value="{{$nextBillNumber}}" readonly required>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6 pb-2">
+                                            </div>
+                                            <div class="col-sm-6 pb-2">
+                                                <label for="sale_date" class="form-label">Bill Date
+                                                    :</label>
+                                                <input type="date" class="form-control form-control-sm mydatepicker"
+                                                    name="sale_date" id="sale_date" placeholder="date" required>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <!-- Item Table -->
-                            {{-- <div class="table-responsive mb-3"> --}}
-                                <table class="table table-striped table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th class="col-sm-1 pb-2">#</th>
-                                            <th class="col-sm-2 pb-2">ITEM</th>
-                                            <th class="col-sm-1 pb-2">QTY</th>
-                                            <th class="col-sm-1 pb-2">UNIT</th>
-                                            <th class="col-sm-1 pb-2">PRICE/UNIT</th>
-                                            <th class="col-sm-2 pb-2 text-center">DISCOUNT</th>
-                                            <th class="col-sm-2 pb-2 text-center">TAX</th>
-                                            <th class="col-sm-1 pb-2">AMOUNT</th>
-                                            <th class="col-sm-1 pb-2"></th>
-                                        </tr>
-                                        <hr>
-                                        {{-- <div id="itemTableBody">
-                                            <div class="row">
-                                                <div class="col-sm-1 pb-2">1</div>
-                                                <div class="col-sm-2 pb-2"><input type="text"
-                                                        class="form-control form-control-sm" placeholder="Item"></div>
-                                                <div class="col-sm-1 pb-2"><input type="number"
-                                                        class="form-control form-control-sm" placeholder="Qty"></div>
-                                                <div class="col-sm-1 pb-2">
-                                                    <select class="form-control form-control-sm">
-                                                        <option>NONE</option>
-                                                        <!-- Add other units here -->
-                                                    </select>
-                                                </div>
-                                                <div class="col-sm-1 pb-2"><input type="number"
-                                                        class="form-control form-control-sm" placeholder="Price"></div>
-                                                <div class="col-sm-2 pb-2">
-                                                    <div class="row">
-                                                        <div class="col-sm-6 pb-2">
-                                                            <input type="number" class="form-control form-control-sm "
-                                                                placeholder="%">
-                                                        </div>
-                                                        <div class="col-sm-6 pb-2">
-                                                            <input type="number" class="form-control form-control-sm "
-                                                                placeholder="Amount">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-2 pb-2">
-                                                    <div class="row">
-                                                        <div class="col-sm-6 pb-2">
-                                                            <select class="form-control form-control-sm">
-                                                                <option>Select</option>
-                                                                <!-- Add tax options here -->
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-sm-6 pb-2">
-                                                            <input type="number" class="form-control form-control-sm"
-                                                                placeholder="Amount">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-1 pb-2"><input type="number"
-                                                        class="form-control form-control-sm" placeholder="Amount"
-                                                        readonly>
-                                                </div>
-                                                <div class="col-sm-1 pb-2"><i class="remove-row far fa-trash-alt "></i>
-                                                </div>
-                                                <hr>
-                                            </div>
-
-                                        </div> --}}
-
-
-                                    </thead>
-                                    <tbody id="itemTableBody">
-                                        <tr>
-                                            <td class="col-sm-1 pb-2">1</td>
-                                            <td class="col-sm-2 pb-2"><input type="text"
-                                                    class="form-control form-control-sm" placeholder="Item">
-                                            </td>
-                                            <td class="col-sm-1 pb-2"><input type="number"
-                                                    class="form-control form-control-sm" placeholder="Qty"></td>
-                                            <td class="col-sm-1 pb-2">
-                                                <select class="form-control form-control-sm">
-                                                    <option>NONE</option>
-                                                    <!-- Add other units here -->
-                                                </select>
-                                            </td>
-                                            <td class="col-sm-1 pb-2"><input type="number"
-                                                    class="form-control form-control-sm" placeholder="Price">
-                                            </td>
-                                            <td class="col-sm-2 pb-2">
-                                                <div class="row">
-                                                    <div class="col-sm-6 pb-2">
-                                                        <input type="number" class="form-control form-control-sm"
-                                                            placeholder="%">
-                                                    </div>
-                                                    <div class="col-sm-6 pb-2">
-                                                        <input type="number" class="form-control form-control-sm"
-                                                            placeholder="Amount">
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="col-sm-2 pb-2">
-                                                <div class="row">
-                                                    <div class="col-sm-6 pb-2">
-                                                        <select class="form-control form-control-sm">
-                                                            <option>Select</option>
-                                                            <!-- Add tax options here -->
+                                <hr>
+                                <div class="basic-form">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered ">
+                                            <thead>
+                                                <tr class="text-center">
+                                                    <th class="col-sm-1 pb-2">#</th>
+                                                    <th class="col-sm-2 pb-2">ITEM</th>
+                                                    <th class="col-sm-1 pb-2">HSN</th>
+                                                    <th class="col-sm-1 pb-2">MRP</th>
+                                                    <th class="col-sm-1 pb-2">QTY</th>
+                                                    <th class="col-sm-1 pb-2">PRICE</th>
+                                                    <th class="col-sm-1 pb-2">DISCOUNT</th>
+                                                    <th class="col-sm-1 pb-2">TAX</th>
+                                                    <th class="col-sm-1 pb-2">AMOUNT</th>
+                                                    <th class="col-sm-1 pb-2"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="itemTableBody">
+                                                <tr rowid='1'>
+                                                    <td class="col-sm-1 pb-2">1</td>
+                                                    <td class="col-sm-2 pb-2">
+                                                        <select class="item_id form-control form-control-sm"
+                                                            name="item_id[]" style="width: 100%;" required>
+                                                            <option></option>
+                                                            @if($item->count() > 0)
+                                                            @foreach($item as $value)
+                                                            <option value="{{$value->item_sno}}">{{$value->item_name}}
+                                                            </option>
+                                                            @endforeach
+                                                            @endif
                                                         </select>
-                                                    </div>
-                                                    <div class="col-sm-6 pb-2">
-                                                        <input type="number" class="form-control form-control-sm"
-                                                            placeholder="Amount">
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="col-sm-1 pb-2"><input type="number"
-                                                    class="form-control form-control-sm" placeholder="Amount" readonly>
-                                            </td>
-                                            <td class="col-sm-1 pb-2"><i class="remove-row far fa-trash-alt "></i></td>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td><button id="addRowButton" class="btn btn-primary">Add Row</button></td>
-                                            <td colspan="6" class="text-right">TOTAL</td>
-                                            <td><input type="number" class="form-control form-control-sm"
-                                                    placeholder="Total" readonly>
-                                            </td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
+                                                    </td>
+                                                    <td class="col-sm-1 pb-2 "><input type="text" name="item_hsn[]"
+                                                            class="form-control form-control-sm item_hsn" min="0"
+                                                            placeholder="HSN" readonly>
+                                                        <input type="hidden" name="item_name[]"
+                                                            class="form-control form-control-sm item_name">
+                                                    </td>
+                                                    <td class="col-sm-1 pb-2 "><input type="text" name="item_mrp[]"
+                                                            class="form-control form-control-sm item_mrp" data-min="1"
+                                                            data-max="99999999" oninput="validateNumber(this)"
+                                                            placeholder="MRP">
+                                                    </td>
+                                                    <td class="col-sm-1 pb-2"><input type="text" name="item_qty[]"
+                                                            class="form-control form-control-sm item_qty" id="item_qty"
+                                                            data-min="1" data-max="99999999"
+                                                            oninput="validateNumber(this)" placeholder="Qty" required>
+                                                    </td>
+                                                    <td class="col-sm-1 pb-2">
+                                                        <input type="text"
+                                                            class="form-control form-control-sm item_sale"
+                                                            name="item_sale[]" id="item_sale" data-min="1"
+                                                            data-max="99999999" oninput="validateNumber(this)"
+                                                            placeholder="Price">
+                                                    </td>
+                                                    <td class="col-sm-1 pb-2 ">
+                                                        <div class="row">
+                                                            <div class="col-md-5"><input type="text"
+                                                                    class="form-control form-control-sm item_discount_percentage"
+                                                                    name="item_discount_percentage[]"
+                                                                    id="item_discount_percentage" data-min="1"
+                                                                    data-max="100" oninput="validateNumber(this)"
+                                                                    placeholder="Discount %">
+                                                            </div>
+                                                            <div class="col-md-7"><input type="text"
+                                                                    class="form-control form-control-sm item_discount"
+                                                                    name="item_discount[]" id="item_discount"
+                                                                    data-min="1" data-max="99999999"
+                                                                    oninput="validateNumber(this)"
+                                                                    placeholder="Discount Amount">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="col-sm-1 pb-2 ">
+                                                        <div class="row">
+                                                            <div class="col-md-5"><input type="text"
+                                                                    class="form-control form-control-sm item_tax_percentage"
+                                                                    name="item_tax_percentage[]" data-min="1"
+                                                                    data-max="100" oninput="validateNumber(this)"
+                                                                    placeholder="Tax %" readonly>
+                                                            </div>
+                                                            <div class="col-md-7"><input type="text"
+                                                                    class="form-control form-control-sm item_tax"
+                                                                    name="item_tax[]" placeholder="Tax Amount"
+                                                                    data-min="1" data-max="99999999"
+                                                                    oninput="validateNumber(this)" readonly>
+                                                            </div>
+                                                        </div>
 
-                                {{--
-                            </div> --}}
-                            <hr>
-                            {{-- <button id="addRowButton" class="btn btn-primary">Add Row</button> --}}
-                        </div>
+                                                    </td>
+                                                    <td class="col-sm-1 pb-2"><input type="text" name="item_amount[]"
+                                                            class="form-control form-control-sm item_amount"
+                                                            data-min="1" data-max="99999999"
+                                                            oninput="validateNumber(this)" placeholder="Amount"
+                                                            readonly>
+                                                    </td>
+                                                    <td class="col-sm-1 pb-2"><i
+                                                            class="remove-row far fa-trash-alt "></i>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td><button id="addRowButton" class="btn btn-primary">Add</button>
+                                                    </td>
+                                                    <td colspan="3" class="text-right">TOTAL</td>
+                                                    <td><input type="number"
+                                                            class="form-control form-control-sm totalQty"
+                                                            name="totalQty" id="totalQty" placeholder="Qty" readonly>
+                                                    </td>
+                                                    <td></td>
+                                                    <td><input type="number"
+                                                            class="form-control form-control-sm item_totalDiscountAmount"
+                                                            name="item_totalDiscountAmount"
+                                                            id="item_totalDiscountAmount" placeholder="Discount"
+                                                            readonly>
+                                                    </td>
+                                                    <td><input type="number"
+                                                            class="form-control form-control-sm item_totalTaxAmount"
+                                                            name="item_totalTaxAmount" id="item_totalTaxAmount"
+                                                            placeholder="Tax" readonly>
+                                                    </td>
+                                                    <td><input type="number"
+                                                            class="form-control form-control-sm item_totalAmount"
+                                                            name="item_totalAmount" id="item_totalAmount"
+                                                            placeholder="Total" readonly>
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-group row">
+                                    <div class="col-md-4 pb-2"></div>
+                                    <div class="col-md-4 pb-2"></div>
+                                    <div class="col-md-4 pb-2">
+                                        <div class="row">
+                                            <div class="pb-2 col-md-4 float-right"></div>
+                                            <div class="pb-2 col-md-4 float-right"><label for="cash_received">Cash
+                                                    Paid
+                                                    :</label></div>
+                                            <div class="pb-2 col-md-4 float-right">
+                                                <input type="text"
+                                                    class="form-control form-control-sm item_totalReceived float-right"
+                                                    name="item_totalReceived" id="item_totalReceived"
+                                                    placeholder="Cash Paid">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="pb-2 col-md-4 float-right"></div>
+                                            <div class="pb-2 col-md-4 float-right"><label for="balance">Balance
+                                                    :</label>
+                                            </div>
+                                            <div class="pb-2 col-md-4 float-right">
+
+                                                <input type="number"
+                                                    class="form-control form-control-sm item_totalBalance float-right"
+                                                    name="item_totalBalance" id="item_totalBalance"
+                                                    placeholder="Total Balance" readonly>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary float-right">Save</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-
+            </section>
         </div>
-
-        <!-- /.card-body -->
-        </form>
-    </div>
-    <!-- /.card -->
-    </section>
-
-    </div>
-    @include('suadmin::layouts.footer')
     </div>
     @include('suadmin::layouts.jslinks')
-    @include('suadmin::layouts.ajax')
-</body>
-<script>
-    $(function () {
-      $('.select2').select2()
-    });
-
-    //Date picker
-    $('#reservationdate').datetimepicker({
-        format: 'L'
-    });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-    let rowIndex = 1;
-
-    // Add row event
-    document.querySelector('.btn-primary').addEventListener('click', function(e) {
-        e.preventDefault();
-
-        const tableBody = document.getElementById('itemTableBody');
-        const newRow = tableBody.rows[0].cloneNode(true);
-
-        newRow.querySelectorAll('input').forEach(input => {
-            input.value = '';
-        });
-
-        // Update row number
-        newRow.cells[0].innerText = ++rowIndex;
-
-        // Append the new row to the table
-        tableBody.appendChild(newRow);
-    });
-
-    // Remove row event
-    document.addEventListener('click', function(e) {
-        if (e.target && e.target.classList.contains('remove-row')) {
-            e.preventDefault();
-
-            const row = e.target.closest('tr');
-            const tableBody = document.getElementById('itemTableBody');
-
-            // Check if there is more than one row
-            if (tableBody.rows.length > 1) {
-                row.remove();
-                rowIndex--;
-
-                // Re-number the rows after deletion
-                for (let i = 0; i < tableBody.rows.length; i++) {
-                    tableBody.rows[i].cells[0].innerText = i + 1;
-                }
-            } else {
-                alert("At least one row is required.");
-            }
-        }
-    });
-});
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var today = new Date().toISOString().split('T')[0];
-        document.getElementById('sale_date').setAttribute('value', today);
-    });
-</script>
-
-
-
-</html>
+    @include('suadmin::layouts.ajax_sale')
+    @include('suadmin::layouts.script_sale')
+    @include('suadmin::layouts.footer')

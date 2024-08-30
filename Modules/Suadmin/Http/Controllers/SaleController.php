@@ -12,9 +12,10 @@ class SaleController extends Controller
     public function sale_add()
     {
         $customer = DB::table('customer')->get();
+        $item = DB::table('item')->get();
         $lastSale = DB::table('sale')->orderBy('sale_bill', 'desc')->first();
         $nextBillNumber = $this->generateNextBillNumber($lastSale ? $lastSale->sale_bill : null);
-        return view('suadmin::sale.add', compact('customer', 'nextBillNumber'));
+        return view('suadmin::sale.add', compact('customer', 'nextBillNumber', 'item'));
     }
 
     private function generateNextBillNumber($lastBillNumber)
@@ -37,8 +38,27 @@ class SaleController extends Controller
 
         return $nextBillNumber;
     }
-    public function sale_add_post()
+    public function sale_add_post(Request $request)
     {
-        return view('suadmin::sale.add');
+        echo '<pre>';
+        print_r($request->all());
+        exit();
+        // return view('suadmin::sale.add');
+    }
+    public function fetch_customer_details(Request $request)
+    {
+        $get_customer_ajax['customer'] = DB::table('customer')
+            ->where("customer_sno", $request->customer_sno)
+            ->get()
+            ->first();
+        return response()->json($get_customer_ajax);
+    }
+    public function fetch_item_details(Request $request)
+    {
+        $get_item_ajax['item'] = DB::table('item')
+            ->where("item_sno", $request->item_sno)
+            ->get()
+            ->first();
+        return response()->json($get_item_ajax);
     }
 }
