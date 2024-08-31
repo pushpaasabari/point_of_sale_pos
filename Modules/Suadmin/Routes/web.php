@@ -49,6 +49,7 @@ Route::prefix('suadmin')->group(function () {
     #Customer route 
     Route::get('/customer.add', [CustomerController::class, 'customer_add']);
     Route::post('/customer.add', [CustomerController::class, 'customer_add_post']);
+    Route::post('/customer.add_modal', [CustomerController::class, 'customer_add_modal_post']);
     Route::get('/customer.list', [CustomerController::class, 'customer_list']);
     Route::get('/customer_status_change/{customer_sno}/{customer_status}', [CustomerController::class, 'customer_status_change']);
     Route::get('/customer.edit/{customer_sno}', [CustomerController::class, 'customer_edit']);

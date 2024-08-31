@@ -17,8 +17,14 @@
                             action="{{ url('suadmin/sale.add') }}" enctype="multipart/form-data" autocomplete="on">
                             {{ csrf_field() }}
                             <div class="card-header">
-                                <h4 class="card-title bold">Sale</h4>
+                                <h4 class="card-title">Sale</h4>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-sm bg-gradient-primary" data-toggle="modal"
+                                        data-target="#modal-add-customer">Add
+                                        Customer</button>
+                                </div>
                             </div>
+
                             <div class="card-body">
                                 <div class="basic-form form-group row">
                                     <div class="col-sm-4 pb-2">
@@ -95,6 +101,7 @@
                                                     <th class="col-sm-2 pb-2">ITEM</th>
                                                     <th class="col-sm-1 pb-2">HSN</th>
                                                     <th class="col-sm-1 pb-2">MRP</th>
+                                                    <th class="col-sm-1 pb-2">STOCK</th>
                                                     <th class="col-sm-1 pb-2">QTY</th>
                                                     <th class="col-sm-1 pb-2">PRICE</th>
                                                     <th class="col-sm-1 pb-2">DISCOUNT</th>
@@ -129,13 +136,16 @@
                                                             data-max="99999999" oninput="validateNumber(this)"
                                                             placeholder="MRP">
                                                     </td>
+                                                    <td>
+                                                        <input type="text" name="item_stock[]" id="item_stock"
+                                                            class="form-control form-control-sm item_stock" min="0"
+                                                            placeholder="Stock" readonly>
+                                                    </td>
                                                     <td class="col-sm-1 pb-2"><input type="text" name="item_qty[]"
                                                             class="form-control form-control-sm item_qty" id="item_qty"
                                                             data-min="1" data-max="99999999"
                                                             oninput="validateNumber(this)" placeholder="Qty" required>
-                                                        <input type="hidden" name="item_stock[]" id="item_stock"
-                                                            class="form-control form-control-sm item_stock" min="0"
-                                                            placeholder="Qty">
+
                                                     </td>
                                                     <td class="col-sm-1 pb-2">
                                                         <input type="text"
@@ -194,7 +204,7 @@
                                                 <tr>
                                                     <td><button id="addRowButton" class="btn btn-primary">Add</button>
                                                     </td>
-                                                    <td colspan="3" class="text-right">TOTAL</td>
+                                                    <td colspan="4" class="text-right">TOTAL</td>
                                                     <td><input type="number"
                                                             class="form-control form-control-sm totalQty"
                                                             name="totalQty" id="totalQty" placeholder="Qty" readonly>
@@ -268,4 +278,5 @@
     @include('suadmin::layouts.jslinks')
     @include('suadmin::layouts.ajax_sale')
     @include('suadmin::layouts.script_sale')
+    @include('suadmin::layouts.modal_sale')
     @include('suadmin::layouts.footer')

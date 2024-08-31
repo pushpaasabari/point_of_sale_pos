@@ -19,10 +19,10 @@ class CustomerController extends Controller
     {
         $request->validate([
             'customer_name' => 'required',
-            'customer_gstin' => 'required',
+            'customer_gstin' => 'nullable',
             'customer_mobile' => 'required',
-            'customer_email' => 'required',
-            'customer_address' => 'required'
+            'customer_email' => 'nullable',
+            'customer_address' => 'nullable'
         ]);
 
         // Insert the data into the database
@@ -39,6 +39,33 @@ class CustomerController extends Controller
 
         // Redirect with success message
         return redirect(url('suadmin/customer.add'))->with("success", "Customer Added successfully!");
+    }
+
+    public function customer_add_modal_post(Request $request)
+    {
+        $request->validate([
+            'customer_name' => 'required',
+            'customer_gstin' => 'nullable',
+            'customer_mobile' => 'required',
+            'customer_email' => 'nullable',
+            'customer_address' => 'nullable'
+        ]);
+
+        // Insert the data into the database
+        DB::table('customer')->insert([
+            'customer_name' => $request->customer_name,
+            'customer_gstin' => $request->customer_gstin,
+            'customer_mobile' => $request->customer_mobile,
+            'customer_email' => $request->customer_email,
+            'customer_address' => $request->customer_address,
+            'customer_created_on' => Carbon::now(),
+            'customer_updated_on' => Carbon::now(),
+            'customer_status' => 1
+        ]);
+
+        // Redirect with success message
+        // return redirect(url('suadmin/customer.add'))->with("success", "Customer Added successfully!");
+        return back()->with('success', 'Customer Added successfully!');
     }
 
     public function customer_list()
