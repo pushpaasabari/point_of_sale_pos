@@ -13,35 +13,40 @@
                     {{ csrf_field() }}
                     <div class="card-body">
                         <div class="form-group row">
-                            <label for="item" class="col-sm-4 col-form-label pb-3">Name :</label>
+                            <label for="item" class="col-sm-3 col-form-label pb-3">Name </label>
+                            <label for="item" class="col-sm-1 col-form-label pb-3">:</label>
                             <div class="col-sm-8 pb-3">
                                 <input type="text" class="form-control" name="customer_name" id="customer_name"
                                     placeholder="Name *" required>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="item" class="col-sm-4 col-form-label pb-3">Mobile :</label>
+                            <label for="item" class="col-sm-3 col-form-label pb-3">Mobile </label>
+                            <label for="item" class="col-sm-1 col-form-label pb-3">:</label>
                             <div class="col-sm-8 pb-3">
                                 <input type="text" class="form-control" name="customer_mobile" id="customer_mobile"
                                     placeholder="Mobile *" required>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="item" class="col-sm-4 col-form-label pb-3">GSTIN :</label>
+                            <label for="item" class="col-sm-3 col-form-label pb-3">GSTIN</label>
+                            <label for="item" class="col-sm-1 col-form-label pb-3">:</label>
                             <div class="col-sm-8 pb-3">
                                 <input type="text" class="form-control" name="customer_gstin" id="customer_gstin"
                                     placeholder="GSTIN">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="item" class="col-sm-4 col-form-label pb-3">Email :</label>
+                            <label for="item" class="col-sm-3 col-form-label pb-3">Email</label>
+                            <label for="item" class="col-sm-1 col-form-label pb-3">:</label>
                             <div class="col-sm-8 pb-3">
                                 <input type="email" class="form-control" name="customer_email" id="customer_email"
                                     placeholder="E-Mail">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="item" class="col-sm-4 col-form-label pb-3">Address :</label>
+                            <label for="item" class="col-sm-3 col-form-label pb-3">Address</label>
+                            <label for="item" class="col-sm-1 col-form-label pb-3">:</label>
                             <div class="col-sm-8 pb-3">
                                 <div class="form-group">
                                     <textarea class="form-control" rows="3" name="customer_address"
