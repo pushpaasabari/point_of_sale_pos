@@ -32,7 +32,8 @@
 
     <!-- Sidebar Menu -->
     <nav class="mt-2">
-      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+      <ul class="nav nav-pills nav-sidebar nav-legacy flex-column" data-widget="treeview" role="menu"
+        data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
         <li class="nav-item">
@@ -184,6 +185,52 @@
               <a href="{{url('suadmin/purchase.list')}}" class="nav-link">
                 <i class="fa fa-list nav-icon"></i>
                 <p>Purchase list</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-shopping-bag"></i>
+            <p>
+              Report
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{url('suadmin/')}}" class="nav-link studentedit">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Sale Report</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{url('suadmin/')}}" class="nav-link">
+                <i class="fa fa-list nav-icon"></i>
+                <p>Purchase Report</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-shopping-bag"></i>
+            <p>
+              Settings
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{url('suadmin/frim.add')}}" class="nav-link studentedit">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Frim Details</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{url('suadmin/frim.defaults')}}" class="nav-link">
+                <i class="fa fa-list nav-icon"></i>
+                <p>Defaults</p>
               </a>
             </li>
           </ul>

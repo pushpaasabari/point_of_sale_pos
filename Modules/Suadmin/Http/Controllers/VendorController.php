@@ -37,7 +37,8 @@ class VendorController extends Controller
         ]);
 
         // Redirect with success message
-        return redirect(url('suadmin/vendor.add'))->with("success", "Vendor Added successfully!");
+        // return redirect(url('suadmin/vendor.add'))->with("success", "Vendor Added successfully!");
+        return back()->with('success', 'Vendor Added successfully!');
     }
 
     public function vendor_list()

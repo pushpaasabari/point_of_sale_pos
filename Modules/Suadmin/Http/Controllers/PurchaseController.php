@@ -21,6 +21,13 @@ class PurchaseController extends Controller
 
         return view('suadmin::purchase.add', compact('vendor', 'item'));
     }
+
+    public function purchase_list()
+    {
+        $purchaseList = DB::table('purchase')->get();
+        return view('suadmin::purchase.list', compact('purchaseList'));
+
+    }
     public function purchase_add_post(Request $request)
     {
         // echo "<pre>";

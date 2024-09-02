@@ -42,6 +42,13 @@ class SaleController extends Controller
 
         return $nextBillNumber;
     }
+
+    public function sale_list()
+    {
+        $saleList = DB::table('sale')->get();
+        return view('suadmin::sale.list', compact('saleList'));
+
+    }
     public function sale_add_post(Request $request)
     {
         // echo '<pre>';

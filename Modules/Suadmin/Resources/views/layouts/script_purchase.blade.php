@@ -32,6 +32,26 @@
         }
     }
 </script>
+<script>
+    function validateGSTNumber(input) {
+    // Convert input to uppercase to match GST format
+    input.value = input.value.toUpperCase().replace(/[^0-9A-Z\.]/g, '');
+
+    // Regular expression to validate GST number
+    const gstRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[A-Z0-9]{1}[Z]{1}[A-Z0-9]{1}$/;
+
+    // Validate only when the input length is exactly 15 characters
+    if (input.value.length === 15) {
+        if (!gstRegex.test(input.value)) {
+            alert('Invalid GST number format.');
+            input.value = ''; // Clear the input field after the alert
+        }
+    } else if (input.value.length > 15) {
+        alert('GST number should be exactly 15 characters.');
+        input.value = ''; // Clear the input field if the length exceeds 15 characters
+    }
+}
+</script>
 {{-- Input Uppercase --}}
 <script>
     document.getElementById('purchase_bill').addEventListener('input', function() {
@@ -116,432 +136,8 @@
     });
 
 </script>
-
+<!-- Core Calculation -->
 {{-- <script>
-    $(document).ready(function () {
-        // Function to calculate row total, discount, and tax
-        function calculateRow(row) {
-            let qty = parseFloat($(row).find('.item_qty').val()) || 0;
-            let price = parseFloat($(row).find('.item_purchase').val()) || 0;
-            let discountPercentage = parseFloat($(row).find('.item_discount_percentage').val()) || 0;
-            let discountAmount = parseFloat($(row).find('.item_discount').val()) || 0;
-
-            // Ensure discount percentage is between 0 and 100
-            if (discountPercentage < 0 || discountPercentage > 100) {
-                alert("Discount percentage must be between 0 and 100.");
-                $(row).find('.item_discount_percentage').val('');
-                $(row).find('.item_discount').val('');
-                // discountPercentage = 0;
-            }
-
-            // Calculate discount amount or percentage based on input
-            if ($(row).find('.item_discount_percentage').is(':focus') && discountPercentage > 0) 
-            {
-                if (qty <= 0) {
-                    alert("Please enter a valid quantity before applying a discount.");
-                    $(row).find('.item_discount_percentage').val('');
-                    $(row).find('.item_discount').val('');
-                    $(row).find('.item_tax').val('');
-                    $(row).find('.item_amount').val('');
-                    return;
-                }
-                else {
-                    discountAmount = (price * qty * discountPercentage) / 100;
-                    if (discountAmount > price * qty) {
-                        alert("Discount amount cannot exceed the total price.");
-                        discountAmount = price * qty;
-                        $(row).find('.item_discount_percentage').val((discountAmount / (price * qty) * 100).toFixed(2));
-                    }
-                    $(row).find('.item_discount').val(discountAmount.toFixed(2));
-                }
-            } 
-            else if ($(row).find('.item_discount').is(':focus') && discountAmount > 0) 
-            {
-                if (qty <= 0) 
-                {
-                    alert("Please enter a valid quantity before applying a discount.");
-                    $(row).find('.item_discount').val('');
-                    return;
-                }
-                else 
-                {
-                    if (discountAmount > price * qty) 
-                    {
-                        alert("Discount amount cannot exceed the total price.");
-                        discountAmount = price * qty;
-                        // $(row).find('.item_discount').val('');return;
-                        $(row).find('.item_discount').val('');
-                        $(row).find('.item_discount_percentage').val('');
-                        return;
-                    }
-                    discountPercentage = (discountAmount / (price * qty)) * 100;
-                    $(row).find('.item_discount_percentage').val(discountPercentage.toFixed(2));
-                }
-            }
-
-            // Calculate the taxable amount
-            let taxableAmount = price * qty - discountAmount;
-            let taxPercentage = parseFloat($(row).find('.item_tax_percentage').val()) || 0;
-            let taxAmount = (taxableAmount * taxPercentage) / 100;
-            let totalTaxAmount = taxAmount;
-            // let totalAmount = taxableAmount + totalTaxAmount;
-
-            // Update the tax and amount fields
-            $(row).find('.item_tax').val(totalTaxAmount.toFixed(2));
-            $(row).find('.item_amount').val(taxableAmount.toFixed(2));
-
-            // Calculate the overall total
-            calculateTotal();
-        }
-
-        // Function to calculate the overall total
-        function calculateTotal() {
-            let totalAmount = 0;
-            let totalDiscountAmount = 0;
-            let item_totalTaxAmount = 0;
-            let totalQty = 0;
-
-            $('.item_amount').each(function () {
-                let amount = parseFloat($(this).val()) || 0;
-                totalAmount += amount;
-            });
-            $('#item_totalAmount').val(totalAmount.toFixed(2));
-
-            $('.item_discount').each(function () {
-                let discountAmount = parseFloat($(this).val()) || 0;
-                totalDiscountAmount += discountAmount;
-            });
-            $('#item_totalDiscountAmount').val(totalDiscountAmount.toFixed(2));
-
-            $('.item_tax').each(function () {
-                let totalTaxAmount = parseFloat($(this).val()) || 0;
-                item_totalTaxAmount += totalTaxAmount;
-            });
-            $('#item_totalTaxAmount').val(item_totalTaxAmount.toFixed(2));
-
-            $('.item_qty').each(function () {
-                let qty = parseFloat($(this).val()) || 0;
-                totalQty += qty;               
-            });
-            $('#totalQty').val(totalQty);
-
-            let cashReceived = parseFloat($('#item_totalReceived').val()) || 0;
-            // let balance = cashReceived - totalAmount;
-            if (totalAmount < cashReceived) {
-                // Ensure totalReceived does not exceed totalAmount
-                alert("Cash Received is not exceed Total Amount. Total Amount :" + totalAmount);
-                $('#item_totalReceived').val('');
-                $('#item_totalBalance').val(totalAmount.toFixed(2)); return;
-            }
-            else {
-                let balance = totalAmount - cashReceived;
-                $('#item_totalBalance').val(balance.toFixed(2));
-            }
-        }
-
-        // Event listeners for input changes
-        $('#itemTableBody').on('input', '.item_qty, .item_purchase, .item_discount, .item_discount_percentage', function () {
-            let row = $(this).closest('tr');
-            calculateRow(row);
-        });
-
-        // Event listener for cash received
-        $('#item_totalReceived').on('input', function () {
-            calculateTotal();
-        });
-
-        // Initial calculation
-        $('#itemTableBody tr').each(function () {
-            calculateRow(this);
-        });
-    });
-
-</script> --}}
-{{-- <script>
-    $(document).ready(function () {
-        // Function to calculate row total, discount, and tax
-        function calculateRow(row) {
-            let qty = parseFloat($(row).find('.item_qty').val()) || 0;
-            let price = parseFloat($(row).find('.item_purchase').val()) || 0;
-            let discountPercentage = parseFloat($(row).find('.item_discount_percentage').val()) || 0;
-            let discountAmount = parseFloat($(row).find('.item_discount').val()) || 0;
-
-            // Ensure discount percentage is between 0 and 100
-            if (discountPercentage < 0 || discountPercentage > 100) {
-                alert("Discount percentage must be between 0 and 100.");
-                $(row).find('.item_discount_percentage').val('');
-                $(row).find('.item_discount').val('');
-                return;
-            }
-            
-
-            // Calculate discount amount or percentage based on input
-            if ($(row).find('.item_discount_percentage').is(':focus')) 
-            {
-                if (qty <= 0) 
-                {
-                    alert("Please enter a valid quantity before applying a discount.");
-                    $(row).find('.item_discount_percentage').val('');
-                    $(row).find('.item_discount').val('');
-                    return;
-                } 
-                else if (discountPercentage > 0) 
-                {
-                    discountAmount = (price * qty * discountPercentage) / 100;
-                    if (discountAmount > price * qty) 
-                    {
-                        alert("Discount amount cannot exceed the total price.");
-                        discountAmount = price * qty;
-                        $(row).find('.item_discount_percentage').val((discountAmount / (price * qty) * 100).toFixed(2));
-                    }
-                    $(row).find('.item_discount').val(discountAmount.toFixed(2));
-                } 
-                else if (discountPercentage === 0 || isNaN(discountPercentage)) 
-                {
-                    $(row).find('.item_discount').val('');  // Clear discount amount if discount percentage is empty
-                }
-            } 
-            else if ($(row).find('.item_discount').is(':focus')) 
-            {
-                if (qty <= 0) 
-                {
-                    alert("Please enter a valid quantity before applying a discount.");
-                    $(row).find('.item_discount_percentage').val('');
-                    $(row).find('.item_discount').val('');
-                    return;
-                } 
-                else 
-                {
-                    if (discountAmount > price * qty) 
-                    {
-                        alert("Discount amount cannot exceed the total price.");
-                        $(row).find('.item_discount').val('');
-                        $(row).find('.item_discount_percentage').val('');
-                        return;
-                    }
-                    discountPercentage = (discountAmount / (price * qty)) * 100;
-                    $(row).find('.item_discount_percentage').val(discountPercentage.toFixed(2));
-                }
-            }
-
-            // Calculate the taxable amount
-            let taxableAmount = price * qty - discountAmount;
-            let taxPercentage = parseFloat($(row).find('.item_tax_percentage').val()) || 0;
-            let taxAmount = (taxableAmount * taxPercentage) / 100;
-            let totalTaxAmount = taxAmount;
-
-            // Update the tax and amount fields
-            $(row).find('.item_tax').val(totalTaxAmount.toFixed(2));
-            $(row).find('.item_amount').val(taxableAmount.toFixed(2));
-
-            // Calculate the overall total
-            calculateTotal();
-        }
-
-        // Function to calculate the overall total
-        function calculateTotal() {
-            let totalAmount = 0;
-            let totalDiscountAmount = 0;
-            let item_totalTaxAmount = 0;
-            let totalQty = 0;
-
-            $('.item_amount').each(function () {
-                let amount = parseFloat($(this).val()) || 0;
-                totalAmount += amount;
-            });
-            $('#item_totalAmount').val(totalAmount.toFixed(2));
-
-            $('.item_discount').each(function () {
-                let discountAmount = parseFloat($(this).val()) || 0;
-                totalDiscountAmount += discountAmount;
-            });
-            $('#item_totalDiscountAmount').val(totalDiscountAmount.toFixed(2));
-
-            $('.item_tax').each(function () {
-                let totalTaxAmount = parseFloat($(this).val()) || 0;
-                item_totalTaxAmount += totalTaxAmount;
-            });
-            $('#item_totalTaxAmount').val(item_totalTaxAmount.toFixed(2));
-
-            $('.item_qty').each(function () {
-                let qty = parseFloat($(this).val()) || 0;
-                totalQty += qty;               
-            });
-            $('#totalQty').val(totalQty);
-
-            let cashReceived = parseFloat($('#item_totalReceived').val()) || 0;
-            if (totalAmount < cashReceived) {
-                alert("Cash Received cannot exceed the Total Amount. Total Amount: " + totalAmount);
-                $('#item_totalReceived').val('');
-                $('#item_totalBalance').val(totalAmount.toFixed(2));
-                return;
-            } else {
-                let balance = totalAmount - cashReceived;
-                $('#item_totalBalance').val(balance.toFixed(2));
-            }
-        }
-
-        // Event listeners for input changes
-        $('#itemTableBody').on('input', '.item_qty, .item_purchase, .item_discount, .item_discount_percentage', function () {
-            let row = $(this).closest('tr');
-            calculateRow(row);
-        });
-
-        // Event listener for cash received
-        $('#item_totalReceived').on('input', function () {
-            calculateTotal();
-        });
-
-        // Initial calculation
-        $('#itemTableBody tr').each(function () {
-            calculateRow(this);
-        });
-    });
-</script> --}}
-{{-- <script>
-    $(document).ready(function () {
-    // Function to calculate row total, discount, and tax
-    function calculateRow(row) {
-        let qty = parseFloat($(row).find('.item_qty').val()) || 0;
-        let price = parseFloat($(row).find('.item_purchase').val()) || 0;
-        let discountPercentage = parseFloat($(row).find('.item_discount_percentage').val()) || 0;
-        let discountAmount = parseFloat($(row).find('.item_discount').val()) || 0;
-
-        // Ensure discount percentage is between 0 and 100
-        if (discountPercentage < 0 || discountPercentage > 100) {
-            alert("Discount percentage must be between 0 and 100.");
-            $(row).find('.item_discount_percentage').val('');
-            $(row).find('.item_discount').val('');
-            return;
-        }
-
-        // Recalculate discount when quantity is changed
-        if (!$(row).find('.item_discount_percentage').is(':focus') && !$(row).find('.item_discount').is(':focus')) {
-            // Recalculate discount amount and percentage based on the new quantity
-            if (discountPercentage > 0) {
-                discountAmount = (price * qty * discountPercentage) / 100;
-                if (discountAmount > price * qty) {
-                    discountAmount = price * qty;
-                }
-                $(row).find('.item_discount').val(discountAmount.toFixed(2));
-            } else if (discountAmount > 0) {
-                discountPercentage = (discountAmount / (price * qty)) * 100;
-                $(row).find('.item_discount_percentage').val(discountPercentage.toFixed(2));
-            }
-        }
-
-        // Calculate discount amount or percentage based on input
-        if ($(row).find('.item_discount_percentage').is(':focus')) {
-            if (qty <= 0) {
-                alert("Please enter a valid quantity before applying a discount.");
-                $(row).find('.item_discount_percentage').val('');
-                $(row).find('.item_discount').val('');
-                return;
-            } else if (discountPercentage > 0) {
-                discountAmount = (price * qty * discountPercentage) / 100;
-                if (discountAmount > price * qty) {
-                    alert("Discount amount cannot exceed the total price.");
-                    discountAmount = price * qty;
-                    $(row).find('.item_discount_percentage').val((discountAmount / (price * qty) * 100).toFixed(2));
-                }
-                $(row).find('.item_discount').val(discountAmount.toFixed(2));
-            } else if (discountPercentage === 0 || isNaN(discountPercentage)) {
-                $(row).find('.item_discount').val('');  // Clear discount amount if discount percentage is empty
-            }
-        } else if ($(row).find('.item_discount').is(':focus')) {
-            if (qty <= 0) {
-                alert("Please enter a valid quantity before applying a discount.");
-                $(row).find('.item_discount_percentage').val('');
-                $(row).find('.item_discount').val('');
-                return;
-            } else {
-                if (discountAmount > price * qty) {
-                    alert("Discount amount cannot exceed the total price.");
-                    $(row).find('.item_discount').val('');
-                    $(row).find('.item_discount_percentage').val('');
-                    return;
-                }
-                discountPercentage = (discountAmount / (price * qty)) * 100;
-                $(row).find('.item_discount_percentage').val(discountPercentage.toFixed(2));
-            }
-        }
-
-        // Calculate the taxable amount
-        let taxableAmount = price * qty - discountAmount;
-        let taxPercentage = parseFloat($(row).find('.item_tax_percentage').val()) || 0;
-        let taxAmount = (taxableAmount * taxPercentage) / 100;
-        let totalTaxAmount = taxAmount;
-
-        // Update the tax and amount fields
-        $(row).find('.item_tax').val(totalTaxAmount.toFixed(2));
-        $(row).find('.item_amount').val(taxableAmount.toFixed(2));
-
-        // Calculate the overall total
-        calculateTotal();
-    }
-
-    // Function to calculate the overall total
-    function calculateTotal() {
-        let totalAmount = 0;
-        let totalDiscountAmount = 0;
-        let item_totalTaxAmount = 0;
-        let totalQty = 0;
-
-        $('.item_amount').each(function () {
-            let amount = parseFloat($(this).val()) || 0;
-            totalAmount += amount;
-        });
-        $('#item_totalAmount').val(totalAmount.toFixed(2));
-
-        $('.item_discount').each(function () {
-            let discountAmount = parseFloat($(this).val()) || 0;
-            totalDiscountAmount += discountAmount;
-        });
-        $('#item_totalDiscountAmount').val(totalDiscountAmount.toFixed(2));
-
-        $('.item_tax').each(function () {
-            let totalTaxAmount = parseFloat($(this).val()) || 0;
-            item_totalTaxAmount += totalTaxAmount;
-        });
-        $('#item_totalTaxAmount').val(item_totalTaxAmount.toFixed(2));
-
-        $('.item_qty').each(function () {
-            let qty = parseFloat($(this).val()) || 0;
-            totalQty += qty;               
-        });
-        $('#totalQty').val(totalQty);
-
-        let cashReceived = parseFloat($('#item_totalReceived').val()) || 0;
-        if (totalAmount < cashReceived) {
-            alert("Cash Received cannot exceed the Total Amount. Total Amount: " + totalAmount);
-            $('#item_totalReceived').val('');
-            $('#item_totalBalance').val(totalAmount.toFixed(2));
-            return;
-        } else {
-            let balance = totalAmount - cashReceived;
-            $('#item_totalBalance').val(balance.toFixed(2));
-        }
-    }
-
-    // Event listeners for input changes
-    $('#itemTableBody').on('input', '.item_qty, .item_purchase, .item_discount, .item_discount_percentage', function () {
-        let row = $(this).closest('tr');
-        calculateRow(row);
-    });
-
-    // Event listener for cash received
-    $('#item_totalReceived').on('input', function () {
-        calculateTotal();
-    });
-
-    // Initial calculation
-    $('#itemTableBody tr').each(function () {
-        calculateRow(this);
-    });
-});
-
-</script> --}}
-<script>
     $(document).ready(function () {
     // Function to calculate row total, discount, and tax
     function calculateRow(row) {
@@ -675,9 +271,9 @@
         calculateRow(this);
     });
 });
+</script> --}}
 
-</script>
-{{-- <script>
+<script>
     $(document).ready(function () {
         // Function to calculate row total, discount, and tax
         function calculateRow(row) {
@@ -685,15 +281,23 @@
             let price = parseFloat($(row).find('.item_purchase').val()) || 0;
             let discountPercentage = parseFloat($(row).find('.item_discount_percentage').val()) || 0;
             let discountAmount = parseFloat($(row).find('.item_discount').val()) || 0;
-
-            // Ensure discount percentage is between 0 and 100 and allows decimal values
+    
+            // Ensure discount percentage is between 0 and 100
             if (discountPercentage < 0 || discountPercentage > 100) {
                 alert("Discount percentage must be between 0 and 100.");
                 $(row).find('.item_discount_percentage').val('');
                 $(row).find('.item_discount').val('');
                 return;
             }
-
+    
+            // Reset discount percentage and amount when quantity or price changes
+            if ($(row).find('.item_qty').is(':focus') || $(row).find('.item_purchase').is(':focus')) {
+                $(row).find('.item_discount_percentage').val('');
+                $(row).find('.item_discount').val('');
+                discountPercentage = 0;
+                discountAmount = 0;
+            }
+    
             // Calculate discount amount or percentage based on input
             if ($(row).find('.item_discount_percentage').is(':focus')) {
                 if (qty <= 0) {
@@ -715,6 +319,7 @@
             } else if ($(row).find('.item_discount').is(':focus')) {
                 if (qty <= 0) {
                     alert("Please enter a valid quantity before applying a discount.");
+                    $(row).find('.item_discount_percentage').val('');
                     $(row).find('.item_discount').val('');
                     return;
                 } else {
@@ -728,52 +333,60 @@
                     $(row).find('.item_discount_percentage').val(discountPercentage.toFixed(2));
                 }
             }
-
+    
+            // Recalculate discount if price changes
+            if ($(row).find('.item_purchase').is(':focus')) {
+                if (discountPercentage > 0) {
+                    discountAmount = (price * qty * discountPercentage) / 100;
+                    $(row).find('.item_discount').val(discountAmount.toFixed(2));
+                }
+            }
+    
             // Calculate the taxable amount
             let taxableAmount = price * qty - discountAmount;
             let taxPercentage = parseFloat($(row).find('.item_tax_percentage').val()) || 0;
             let taxAmount = (taxableAmount * taxPercentage) / 100;
             let totalTaxAmount = taxAmount;
-
+    
             // Update the tax and amount fields
             $(row).find('.item_tax').val(totalTaxAmount.toFixed(2));
             $(row).find('.item_amount').val(taxableAmount.toFixed(2));
-
+    
             // Calculate the overall total
             calculateTotal();
         }
-
+    
         // Function to calculate the overall total
         function calculateTotal() {
             let totalAmount = 0;
             let totalDiscountAmount = 0;
             let item_totalTaxAmount = 0;
             let totalQty = 0;
-
+    
             $('.item_amount').each(function () {
                 let amount = parseFloat($(this).val()) || 0;
                 totalAmount += amount;
             });
             $('#item_totalAmount').val(totalAmount.toFixed(2));
-
+    
             $('.item_discount').each(function () {
                 let discountAmount = parseFloat($(this).val()) || 0;
                 totalDiscountAmount += discountAmount;
             });
             $('#item_totalDiscountAmount').val(totalDiscountAmount.toFixed(2));
-
+    
             $('.item_tax').each(function () {
                 let totalTaxAmount = parseFloat($(this).val()) || 0;
                 item_totalTaxAmount += totalTaxAmount;
             });
             $('#item_totalTaxAmount').val(item_totalTaxAmount.toFixed(2));
-
+    
             $('.item_qty').each(function () {
                 let qty = parseFloat($(this).val()) || 0;
                 totalQty += qty;               
             });
             $('#totalQty').val(totalQty);
-
+    
             let cashReceived = parseFloat($('#item_totalReceived').val()) || 0;
             if (totalAmount < cashReceived) {
                 alert("Cash Received cannot exceed the Total Amount. Total Amount: " + totalAmount);
@@ -781,150 +394,28 @@
                 $('#item_totalBalance').val(totalAmount.toFixed(2));
                 return;
             } else {
-                let balance = totalAmount - cashReceived;
+                let balance = Math.ceil(totalAmount - cashReceived);
                 $('#item_totalBalance').val(balance.toFixed(2));
             }
         }
-
+    
         // Event listeners for input changes
         $('#itemTableBody').on('input', '.item_qty, .item_purchase, .item_discount, .item_discount_percentage', function () {
             let row = $(this).closest('tr');
             calculateRow(row);
         });
-
+    
         // Event listener for cash received
         $('#item_totalReceived').on('input', function () {
             calculateTotal();
         });
-
+    
         // Initial calculation
         $('#itemTableBody tr').each(function () {
             calculateRow(this);
         });
     });
-</script> --}}
-{{-- <script>
-    $(document).ready(function () {
-        // Function to calculate row total, discount, and tax
-        function calculateRow(row) {
-            let qty = parseFloat($(row).find('.item_qty').val()) || 0;
-            let price = parseFloat($(row).find('.item_purchase').val()) || 0;
-            let discountPercentage = parseFloat($(row).find('.item_discount_percentage').val()) || 0;
-            let discountAmount = parseFloat($(row).find('.item_discount').val()) || 0;
-
-            // Handle case where qty is removed or set to zero
-            if (qty <= 0) {
-                $(row).find('.item_discount_percentage').val('');
-                $(row).find('.item_discount').val('');
-                $(row).find('.item_tax').val('');
-                $(row).find('.item_amount').val('');
-                return; // Stop further calculations as quantity is zero or invalid
-            }
-
-            // Ensure discount percentage is between 0 and 100 and allows decimal values
-            if (discountPercentage < 0 || discountPercentage > 100) {
-                alert("Discount percentage must be between 0 and 100.");
-                $(row).find('.item_discount_percentage').val('');
-                $(row).find('.item_discount').val('');
-                return;
-            }
-
-            // Calculate discount amount or percentage based on input
-            if ($(row).find('.item_discount_percentage').is(':focus')) {
-                discountAmount = (price * qty * discountPercentage) / 100;
-                if (discountAmount > price * qty) {
-                    alert("Discount amount cannot exceed the total price.");
-                    discountAmount = price * qty;
-                    $(row).find('.item_discount_percentage').val((discountAmount / (price * qty) * 100).toFixed(2));
-                }
-                $(row).find('.item_discount').val(discountAmount.toFixed(2));
-            } else if ($(row).find('.item_discount').is(':focus')) {
-                if (discountAmount > price * qty) {
-                    alert("Discount amount cannot exceed the total price.");
-                    $(row).find('.item_discount').val('');
-                    $(row).find('.item_discount_percentage').val('');
-                    return;
-                }
-                discountPercentage = (discountAmount / (price * qty)) * 100;
-                $(row).find('.item_discount_percentage').val(discountPercentage.toFixed(2));
-            }
-
-            // Calculate the taxable amount
-            let taxableAmount = price * qty - discountAmount;
-            let taxPercentage = parseFloat($(row).find('.item_tax_percentage').val()) || 0;
-            let taxAmount = (taxableAmount * taxPercentage) / 100;
-            let totalTaxAmount = taxAmount;
-
-            // Update the tax and amount fields
-            $(row).find('.item_tax').val(totalTaxAmount.toFixed(2));
-            $(row).find('.item_amount').val(taxableAmount.toFixed(2));
-
-            // Calculate the overall total
-            calculateTotal();
-        }
-
-        // Function to calculate the overall total
-        function calculateTotal() {
-            let totalAmount = 0;
-            let totalDiscountAmount = 0;
-            let item_totalTaxAmount = 0;
-            let totalQty = 0;
-
-            $('.item_amount').each(function () {
-                let amount = parseFloat($(this).val()) || 0;
-                totalAmount += amount;
-            });
-            $('#item_totalAmount').val(totalAmount.toFixed(2));
-
-            $('.item_discount').each(function () {
-                let discountAmount = parseFloat($(this).val()) || 0;
-                totalDiscountAmount += discountAmount;
-            });
-            $('#item_totalDiscountAmount').val(totalDiscountAmount.toFixed(2));
-
-            $('.item_tax').each(function () {
-                let totalTaxAmount = parseFloat($(this).val()) || 0;
-                item_totalTaxAmount += totalTaxAmount;
-            });
-            $('#item_totalTaxAmount').val(item_totalTaxAmount.toFixed(2));
-
-            $('.item_qty').each(function () {
-                let qty = parseFloat($(this).val()) || 0;
-                totalQty += qty;               
-            });
-            $('#totalQty').val(totalQty);
-
-            let cashReceived = parseFloat($('#item_totalReceived').val()) || 0;
-            if (totalAmount < cashReceived) {
-                alert("Cash Received cannot exceed the Total Amount. Total Amount: " + totalAmount);
-                $('#item_totalReceived').val('');
-                $('#item_totalBalance').val(totalAmount.toFixed(2));
-                return;
-            } else {
-                let balance = totalAmount - cashReceived;
-                $('#item_totalBalance').val(balance.toFixed(2));
-            }
-        }
-
-        // Event listeners for input changes
-        $('#itemTableBody').on('input', '.item_qty, .item_purchase, .item_discount, .item_discount_percentage', function () {
-            let row = $(this).closest('tr');
-            calculateRow(row);
-        });
-
-        // Event listener for cash received
-        $('#item_totalReceived').on('input', function () {
-            calculateTotal();
-        });
-
-        // Initial calculation
-        $('#itemTableBody tr').each(function () {
-            calculateRow(this);
-        });
-    });
-</script> --}}
-
-
+</script>
 
 
 <script>

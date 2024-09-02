@@ -28,6 +28,14 @@
                             {{ csrf_field() }}
                             <div class="card-header">
                                 <h4 class="card-title bold">Purchase</h4>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-sm bg-gradient-primary" data-toggle="modal"
+                                        data-target="#modal-add-vendor">Add
+                                        Vendor</button>
+                                    <button type="button" class="btn btn-sm bg-gradient-primary" data-toggle="modal"
+                                        data-target="#modal-add-item">Add
+                                        Item</button>
+                                </div>
                             </div>
                             <div class="card-body">
                                 <div class="basic-form form-group row">
@@ -274,4 +282,5 @@
     @include('suadmin::layouts.jslinks')
     @include('suadmin::layouts.ajax_purchase')
     @include('suadmin::layouts.script_purchase')
+    @include('suadmin::layouts.modal_purchase')
     @include('suadmin::layouts.footer')

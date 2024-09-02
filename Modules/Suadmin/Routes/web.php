@@ -68,6 +68,7 @@ Route::prefix('suadmin')->group(function () {
     #Purchase route 
     Route::get('/purchase.add', [PurchaseController::class, 'purchase_add']);
     Route::post('/purchase.add', [PurchaseController::class, 'purchase_add_post']);
+    Route::get('/purchase.list', [PurchaseController::class, 'purchase_list']);
     // Route::get('/purchase.fetch_vendor_details', [PurchaseController::class, 'fetch_vendor_details']);
     Route::post('/purchase.fetch_vendor_details', [PurchaseController::class, 'fetch_vendor_details']);
     Route::post('/purchase.fetch_item_details', [PurchaseController::class, 'fetch_item_details']);
@@ -75,9 +76,12 @@ Route::prefix('suadmin')->group(function () {
     #Sale route 
     Route::get('/sale.add', [SaleController::class, 'sale_add']);
     Route::post('/sale.add', [SaleController::class, 'sale_add_post']);
+    Route::get('/sale.list', [SaleController::class, 'sale_list']);
     Route::post('/sale.fetch_customer_details', [SaleController::class, 'fetch_customer_details']);
     Route::post('/sale.fetch_item_details', [SaleController::class, 'fetch_item_details']);
 
+    #Frim route 
+    Route::get('/frim.add', [FrimController::class, 'frim']);
 
 
 });
