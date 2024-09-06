@@ -8,10 +8,10 @@ use Illuminate\Routing\Controller;
 use DB;
 use Carbon\Carbon;
 
-class FrimController extends Controller
+class BusinessController extends Controller
 {
-    public function frim()
+    public function business_basic()
     {
-        return view('suadmin::frim.add');
+        return view('suadmin::business.basic');
     }
 }

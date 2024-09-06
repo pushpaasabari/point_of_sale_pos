@@ -80,8 +80,8 @@ Route::prefix('suadmin')->group(function () {
     Route::post('/sale.fetch_customer_details', [SaleController::class, 'fetch_customer_details']);
     Route::post('/sale.fetch_item_details', [SaleController::class, 'fetch_item_details']);
 
-    #Frim route 
-    Route::get('/frim.add', [FrimController::class, 'frim']);
+    #Business route 
+    Route::get('/business.basic', [BusinessController::class, 'business_basic']);
 
 
 });

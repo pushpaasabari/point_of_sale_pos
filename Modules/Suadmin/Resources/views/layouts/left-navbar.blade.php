@@ -222,13 +222,13 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{{url('suadmin/frim.add')}}" class="nav-link studentedit">
+              <a href="{{url('suadmin/business.basic')}}" class="nav-link studentedit">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Frim Details</p>
+                <p>Business Details</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{url('suadmin/frim.defaults')}}" class="nav-link">
+              <a href="{{url('suadmin/business.defaults')}}" class="nav-link">
                 <i class="fa fa-list nav-icon"></i>
                 <p>Defaults</p>
               </a>
