@@ -82,6 +82,7 @@ Route::prefix('suadmin')->group(function () {
 
     #Business route 
     Route::get('/business.basic', [BusinessController::class, 'business_basic']);
+    Route::post('/business.upload-profile-picture', [BusinessController::class, 'uploadProfilePicture']);
 
 
 });

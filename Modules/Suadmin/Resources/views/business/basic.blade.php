@@ -1,7 +1,7 @@
 @include('suadmin::layouts.header')
 <!-- CSS Start-->
 @include('suadmin::layouts.css')
-<style>
+{{-- <style>
     /* Circular button on top right of the image */
     .btn-light {
         background-color: #f8f9fa;
@@ -19,7 +19,7 @@
     #profileImagePreview {
         object-fit: cover;
     }
-</style>
+</style> --}}
 <!-- CSS End-->
 </head>
 
@@ -173,6 +173,7 @@
                                                         </label>
                                                         <input type="file" id="thumbUpload02" class="d-none"
                                                             accept=".png, .jpg, .jpeg">
+                                                        <meta name="csrf-token" content="{{ csrf_token() }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -279,5 +280,50 @@
     @include('suadmin::layouts.ajax')
     @include('suadmin::layouts.modal_business')
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('thumbUpload02').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                document.getElementById('profileImagePreview').src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+
+            const formData = new FormData();
+            formData.append('profile_picture', file);
+
+            // Make sure the CSRF token is present in the meta tag
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            if (!csrfToken) {
+                alert("CSRF token not found.");
+                return;
+            }
+
+            fetch('/suadmin/business.upload-profile-picture', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Profile picture updated successfully!');
+                } else {
+                    alert('Failed to update profile picture.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while uploading the picture.');
+            });
+        }
+    });
+});
+
+</script>
 
 </html>
