@@ -58,7 +58,7 @@
                                                 <label for="exampleInputBorder">Name :</label>
                                             </div>
                                             <div class="col-sm-8 col-form-label pb-3">
-                                                {{'business Name'}}
+                                                {{$business_basic->business_name}}
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -66,7 +66,7 @@
                                                     for="exampleInputBorder">GSTIN</label>
                                                 :</div>
                                             <div class="col-sm-8 col-form-label pb-3">
-                                                {{'business GSTIN'}}
+                                                {{$business_basic->business_gstin}}
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -74,7 +74,7 @@
                                                     for="exampleInputBorder">CIN</label>
                                                 :</div>
                                             <div class="col-sm-8 col-form-label pb-3">
-                                                {{'CIN Number'}}
+                                                {{$business_basic->business_cin}}
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -82,7 +82,7 @@
                                                     for="exampleInputBorder">E-Mail</label>
                                                 :</div>
                                             <div class="col-sm-8 col-form-label pb-3">
-                                                {{'E-Mail'}}
+                                                {{$business_basic->business_email}}
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -90,7 +90,7 @@
                                                     for="exampleInputBorder">Mobile</label>
                                                 :</div>
                                             <div class="col-sm-8 col-form-label pb-3">
-                                                {{'Mobile'}}
+                                                {{$business_basic->business_mobile}}
                                             </div>
                                         </div>
 
@@ -121,21 +121,23 @@
                                                 <label for="exampleInputBorder">Address :</label>
                                             </div>
                                             <div class="col-sm-8 col-form-label pb-3">
-                                                {{'Business Address'}}
+                                                {{$business_basic->business_street}}
+                                                {{$business_basic->business_landmark}}
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-sm-4 pb-3 ">
                                             </div>
                                             <div class="col-sm-8 col-form-label pb-3">
-                                                {{'Business Address'}}
+                                                {{$business_basic->business_city}}
+                                                {{$business_basic->business_country}}
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-sm-4 pb-3 ">
                                             </div>
                                             <div class="col-sm-8 col-form-label pb-3">
-                                                {{'Business Address'}}
+                                                {{$business_basic->business_pincode}}
                                             </div>
                                         </div>
 
@@ -163,8 +165,9 @@
                                         <div class="form-group row">
                                             <div class="text-center mx-auto">
                                                 <div class="position-relative d-inline-block">
-                                                    <img src="{{asset('assets/img/1.jpg')}}" alt="Profile Picture"
-                                                        id="profileImagePreview" class="rounded-circle img-thumbnail"
+                                                    <img src="{{asset('assets/profile_pictures/'.$business_basic->business_profile_picture)}}"
+                                                        alt="Profile Picture" id="profileImagePreview"
+                                                        class="rounded-circle img-thumbnail"
                                                         style="width: 150px; height: 150px;">
                                                     <div class="position-absolute" style="top: 0; right: 0;">
                                                         <label for="thumbUpload02" class="">
@@ -200,9 +203,6 @@
                                                     </div>
                                                 </div>
                                             </div> --}}
-
-
-
                                         </div>
                                     </div>
                                 </div>
@@ -232,7 +232,7 @@
                                             <label for="exampleInputBorder">Invoice* :</label>
                                         </div>
                                         <div class="col-sm-8 col-form-label pb-3">
-                                            {{'Invoive'}}
+                                            {{$business_basic->business_prefix_invoice}}
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -240,7 +240,7 @@
                                             <label for="exampleInputBorder">Estimate :</label>
                                         </div>
                                         <div class="col-sm-8 col-form-label pb-3">
-                                            {{'Estimate'}}
+                                            {{$business_basic->business_prefix_estimate}}
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -248,7 +248,7 @@
                                             <label for="exampleInputBorder">Payment IN :</label>
                                         </div>
                                         <div class="col-sm-8 col-form-label pb-3">
-                                            {{'Payment_In'}}
+                                            {{$business_basic->business_prefix_paymentin}}
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -256,7 +256,7 @@
                                             <label for="exampleInputBorder">Payment Out :</label>
                                         </div>
                                         <div class="col-sm-8 col-form-label pb-3">
-                                            {{'Payment_out'}}
+                                            {{$business_basic->business_prefix_paymentout}}
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -264,7 +264,7 @@
                                             <label for="exampleInputBorder">Credit Note :</label>
                                         </div>
                                         <div class="col-sm-8 col-form-label pb-3">
-                                            {{'Credit_Note'}}
+                                            {{$business_basic->business_prefix_creditnote}}
                                         </div>
                                     </div>
                                 </div>

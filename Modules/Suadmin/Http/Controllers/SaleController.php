@@ -24,8 +24,11 @@ class SaleController extends Controller
 
     private function generateNextBillNumber($lastBillNumber)
     {
+
         // Define your prefix and suffix
-        $prefix = 'SALE/24-25/';
+        $business_basic = DB::table('business_basic')->get('business_prefix_invoice')->first();
+        // $prefix = 'SALE/24-25/';
+        $prefix = $business_basic->business_prefix_invoice;
 
         if ($lastBillNumber) {
             // Extract the numeric part
